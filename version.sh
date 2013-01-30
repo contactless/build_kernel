@@ -23,8 +23,8 @@ config="mxs_defconfig"
 
 #Kernel/Build
 KERNEL_REL=3.7
-KERNEL_TAG=${KERNEL_REL}.4
-BUILD=imxv5-x0.5
+KERNEL_TAG=${KERNEL_REL}.5
+BUILD=imxv5-x0.6
 
 #v3.X-rcX + upto SHA
 #KERNEL_SHA="fa4c95bfdb85d568ae327d57aa33a4f55bab79c4"
