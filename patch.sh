@@ -80,9 +80,23 @@ atmel_aria () {
 #	${git} "${DIR}/patches/atmel_aria/0006-at91-sam9x-enable-nand.patch"
 }
 
+atmel_spi () {
+	echo "dir: atmel_spi"
+	#Just the first half of: http://lists.infradead.org/pipermail/linux-arm-kernel/2013-February/151628.html
+	${git} "${DIR}/patches/atmel_spi/0001-spi-spi-atmel-fix-master-num_chipselect-wrongly-set.patch"
+	${git} "${DIR}/patches/atmel_spi/0002-spi-spi-atmel-detect-the-capabilities-of-SPI-core-by.patch"
+	${git} "${DIR}/patches/atmel_spi/0003-spi-spi-atmel-add-support-transfer-on-CS1-2-3-not-on.patch"
+	${git} "${DIR}/patches/atmel_spi/0004-spi-spi-atmel-add-physical-base-address.patch"
+	${git} "${DIR}/patches/atmel_spi/0005-spi-spi-atmel-call-unmapping-on-transfers-buffers.patch"
+	${git} "${DIR}/patches/atmel_spi/0006-spi-spi-atmel-status-information-passed-through-cont.patch"
+	${git} "${DIR}/patches/atmel_spi/0007-spi-spi-atmel-add-flag-to-controller-data-for-lock-o.patch"
+	${git} "${DIR}/patches/atmel_spi/0008-spi-spi-atmel-add-dmaengine-support.patch"
+}
+
 arm
 #atmel_fixes
 atmel_mci
 atmel_aria
+#atmel_spi
 
 echo "patch.sh ran successful"
