@@ -1,7 +1,7 @@
-From 425ce2917681cd93ba2bf9477c850a0134bb950f Mon Sep 17 00:00:00 2001
+From 197ea81b6a6cefcc4662276c3c5ddb4d024afbf1 Mon Sep 17 00:00:00 2001
 From: Nicolas Ferre <nicolas.ferre@atmel.com>
 Date: Tue, 26 Feb 2013 14:47:59 +0800
-Subject: [PATCH 6/8] spi/spi-atmel: status information passed through
+Subject: [PATCH 06/16] spi/spi-atmel: status information passed through
  controller data
 
 The status of transfer is stored in controller data structure

@@ -1,7 +1,7 @@
-From e3811bbe1bd7861ffc476a3c8a3904c72b73fb68 Mon Sep 17 00:00:00 2001
+From 8abd8efaef6edf43cba2a2bd99ef96fba671e6cd Mon Sep 17 00:00:00 2001
 From: Nicolas Ferre <nicolas.ferre@atmel.com>
 Date: Tue, 26 Feb 2013 14:48:01 +0800
-Subject: [PATCH 8/8] spi/spi-atmel: add dmaengine support
+Subject: [PATCH 08/16] spi/spi-atmel: add dmaengine support
 
 Add dmaengine support.
 

@@ -1,7 +1,7 @@
-From 586241e65cd27715d21a37f8a47861ad85700544 Mon Sep 17 00:00:00 2001
+From d204cde7a6967e482c540e17595e1c832edacdd1 Mon Sep 17 00:00:00 2001
 From: Wenyou Yang <wenyou.yang@atmel.com>
 Date: Tue, 26 Feb 2013 14:47:55 +0800
-Subject: [PATCH 2/8] spi/spi-atmel: detect the capabilities of SPI core by
+Subject: [PATCH 02/16] spi/spi-atmel: detect the capabilities of SPI core by
  reading the VERSION register.
 
 the "has_dma_support" needed for future use with dmaengine driver.

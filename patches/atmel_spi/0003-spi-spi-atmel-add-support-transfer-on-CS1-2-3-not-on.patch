@@ -1,8 +1,8 @@
-From 88f4a0b020091e60370053d1317faa240b9f6bc4 Mon Sep 17 00:00:00 2001
+From b558c80cacf9273550096ab41e3b6637b8d157ff Mon Sep 17 00:00:00 2001
 From: Wenyou Yang <wenyou.yang@atmel.com>
 Date: Tue, 26 Feb 2013 14:47:56 +0800
-Subject: [PATCH 3/8] spi/spi-atmel: add support transfer on CS1,2,3, not only
- on CS0
+Subject: [PATCH 03/16] spi/spi-atmel: add support transfer on CS1,2,3, not
+ only on CS0
 
 Signed-off-by: Wenyou Yang <wenyou.yang@atmel.com>
 Cc: spi-devel-general@lists.sourceforge.net

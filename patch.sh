@@ -82,7 +82,7 @@ atmel_aria () {
 
 atmel_spi () {
 	echo "dir: atmel_spi"
-	#Just the first half of: http://lists.infradead.org/pipermail/linux-arm-kernel/2013-February/151628.html
+	#Just the first half of: http://lists.infradead.org/pipermail/linux-arm-kernel/2013-February/151777.html
 	${git} "${DIR}/patches/atmel_spi/0001-spi-spi-atmel-fix-master-num_chipselect-wrongly-set.patch"
 	${git} "${DIR}/patches/atmel_spi/0002-spi-spi-atmel-detect-the-capabilities-of-SPI-core-by.patch"
 	${git} "${DIR}/patches/atmel_spi/0003-spi-spi-atmel-add-support-transfer-on-CS1-2-3-not-on.patch"
@@ -91,12 +91,20 @@ atmel_spi () {
 	${git} "${DIR}/patches/atmel_spi/0006-spi-spi-atmel-status-information-passed-through-cont.patch"
 	${git} "${DIR}/patches/atmel_spi/0007-spi-spi-atmel-add-flag-to-controller-data-for-lock-o.patch"
 	${git} "${DIR}/patches/atmel_spi/0008-spi-spi-atmel-add-dmaengine-support.patch"
+	${git} "${DIR}/patches/atmel_spi/0009-spi-spi-atmel-fix-spi-atmel-driver-to-adapt-to-slave.patch"
+	${git} "${DIR}/patches/atmel_spi/0010-spi-spi-atmel-correct-16-bits-transfers-using-PIO.patch"
+	${git} "${DIR}/patches/atmel_spi/0011-spi-spi-atmel-correct-16-bits-transfers-with-DMA.patch"
+	${git} "${DIR}/patches/atmel_spi/0012-spi-spi-atmel-add-pinctrl-support-for-atmel-spi.patch"
+	${git} "${DIR}/patches/atmel_spi/0013-ARM-at91-add-clocks-for-spi-dt-entries.patch"
+	${git} "${DIR}/patches/atmel_spi/0014-ARM-dts-add-spi-nodes-for-atmel-SoC.patch"
+	${git} "${DIR}/patches/atmel_spi/0015-ARM-dts-add-spi-nodes-for-the-atmel-boards.patch"
+	${git} "${DIR}/patches/atmel_spi/0016-ARM-dts-add-pinctrl-property-for-spi-node-for-atmel-.patch"
 }
 
 arm
 #atmel_fixes
 atmel_mci
 atmel_aria
-#atmel_spi
+atmel_spi
 
 echo "patch.sh ran successful"

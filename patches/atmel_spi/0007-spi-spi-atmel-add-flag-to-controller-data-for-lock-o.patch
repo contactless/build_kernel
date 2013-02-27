@@ -1,7 +1,7 @@
-From e8f232bb4ae3c76dbcf77ba4afe5ec96fc7f90fd Mon Sep 17 00:00:00 2001
+From 9fb2ac69790f017f1f51559353672f94b38c565b Mon Sep 17 00:00:00 2001
 From: Nicolas Ferre <nicolas.ferre@atmel.com>
 Date: Tue, 26 Feb 2013 14:48:00 +0800
-Subject: [PATCH 7/8] spi/spi-atmel: add flag to controller data for lock
+Subject: [PATCH 07/16] spi/spi-atmel: add flag to controller data for lock
  operations
 
 Will allow to drop the lock during DMA operations.

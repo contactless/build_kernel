@@ -1,7 +1,7 @@
-From 472d7d74c53e1e21c0c6005e2cfad8fe32b97390 Mon Sep 17 00:00:00 2001
+From 0597f535fb98af3dc7922a1f03f7aefbe8ca2e92 Mon Sep 17 00:00:00 2001
 From: Nicolas Ferre <nicolas.ferre@atmel.com>
 Date: Tue, 26 Feb 2013 14:47:58 +0800
-Subject: [PATCH 5/8] spi/spi-atmel: call unmapping on transfers buffers
+Subject: [PATCH 05/16] spi/spi-atmel: call unmapping on transfers buffers
 
 Signed-off-by: Nicolas Ferre <nicolas.ferre@atmel.com>
 Cc: spi-devel-general@lists.sourceforge.net
