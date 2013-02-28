@@ -95,6 +95,8 @@ atmel_spi () {
 	${git} "${DIR}/patches/atmel_spi/0014-ARM-dts-add-spi-nodes-for-atmel-SoC.patch"
 	${git} "${DIR}/patches/atmel_spi/0015-ARM-dts-add-spi-nodes-for-the-atmel-boards.patch"
 	${git} "${DIR}/patches/atmel_spi/0016-ARM-dts-add-pinctrl-property-for-spi-node-for-atmel-.patch"
+
+	${git} "${DIR}/patches/atmel_aria/0009-9x5-use-spidev.patch"
 }
 
 arm

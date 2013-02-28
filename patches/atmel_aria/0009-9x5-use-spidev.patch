@@ -1,0 +1,26 @@
+From 607e92f587a1f042b7747ffd8e5958b6a92c43eb Mon Sep 17 00:00:00 2001
+From: Robert Nelson <robertcnelson@gmail.com>
+Date: Thu, 28 Feb 2013 09:07:22 -0600
+Subject: [PATCH 9/9] 9x5: use spidev
+
+Signed-off-by: Robert Nelson <robertcnelson@gmail.com>
+---
+ arch/arm/boot/dts/at91sam9x5ek.dtsi |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/arm/boot/dts/at91sam9x5ek.dtsi b/arch/arm/boot/dts/at91sam9x5ek.dtsi
+index 09f5e66..4c48ba2 100644
+--- a/arch/arm/boot/dts/at91sam9x5ek.dtsi
++++ b/arch/arm/boot/dts/at91sam9x5ek.dtsi
+@@ -89,7 +89,7 @@
+ 				status = "okay";
+ 				cs-gpios = <&pioA 14 0>, <0>, <0>, <0>;
+ 				m25p80@0 {
+-					compatible = "atmel,at25df321a";
++					compatible = "spidev";
+ 					spi-max-frequency = <50000000>;
+ 					reg = <0>;
+ 				};
+-- 
+1.7.10.4
+
