@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 ARCH=$(uname -m)
-#DISABLE_MASTER_BRANCH=1
+DISABLE_MASTER_BRANCH=1
 
 CORES=1
 if [ "x${ARCH}" == "xx86_64" ] || [ "x${ARCH}" == "xi686" ] ; then
@@ -17,14 +17,12 @@ if [ "${GIT_NOEDIT}" ] ; then
 	GIT_OPTS+="--no-edit"
 fi
 
-CCACHE=ccache
-
 config="mxs_defconfig"
 
 #Kernel/Build
 KERNEL_REL=3.8
-KERNEL_TAG=${KERNEL_REL}.2
-BUILD=imxv5-x0.5
+KERNEL_TAG=${KERNEL_REL}.3
+BUILD=imxv5-x0.6
 
 #v3.X-rcX + upto SHA
 #KERNEL_SHA="fa4c95bfdb85d568ae327d57aa33a4f55bab79c4"
