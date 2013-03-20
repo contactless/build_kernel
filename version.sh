@@ -21,8 +21,8 @@ config="at91_dt_defconfig"
 
 #Kernel/Build
 KERNEL_REL=3.8
-KERNEL_TAG=${KERNEL_REL}.3
-BUILD=armv5-x0.17
+KERNEL_TAG=${KERNEL_REL}.4
+BUILD=armv5-x0.18
 
 #v3.X-rcX + upto SHA
 #KERNEL_SHA=""
