@@ -65,3 +65,7 @@ fi
 ###ADVANCED: AUTO_BUILD: Easier integration with Jenkins/Buildbot/etc..
 #
 #AUTO_BUILD=1
+
+
+###OPTIONAL: PULL_DEV: pull dev repo for build branch instead of applying patches
+#PULL_DEV=1
