@@ -1,7 +1,7 @@
 #!/bin/sh -e
 
 DIR=$PWD
-repo="https://github.com/RobertCNelson/linux/commit"
+repo="https://github.com/evgeny-boger/linux/commit"
 
 if [ -e ${DIR}/version.sh ]; then
 	unset BRANCH
