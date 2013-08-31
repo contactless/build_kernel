@@ -38,6 +38,16 @@ patch_kernel () {
 	cd ${DIR}/
 }
 
+pull_dev () {
+	cd ${DIR}/KERNEL
+	export DIR GIT_OPTS
+
+	echo "pulling dev repo"
+	git pull dev
+
+	cd ${DIR}/
+}
+
 copy_defconfig () {
 	cd ${DIR}/KERNEL/
 	make ARCH=arm CROSS_COMPILE=${CC} distclean

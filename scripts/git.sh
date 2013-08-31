@@ -153,6 +153,9 @@ git_kernel () {
 		git pull ${GIT_OPTS} ${torvalds_linux} master --tags || true
 	fi
 
+
+	git remote add dev ${dev_linux} -t v${KERNEL_TAG}-${BUILD} || echo "remote dev already exists (not a big deal)"
+
 	git describe
 
 	cd ${DIR}/
@@ -191,5 +194,7 @@ else
 	torvalds_linux="git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git"
 	linux_stable="git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git"
 fi
+
+dev_linux="git@github.com:evgeny-boger/linux.git"
 
 git_kernel
