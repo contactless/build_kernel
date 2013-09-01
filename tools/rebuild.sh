@@ -191,7 +191,12 @@ if [ "${FULL_REBUILD}" ] ; then
 		/bin/sh -e "${DIR}/scripts/bisect.sh" || { exit 1 ; }
 	fi
 
-	patch_kernel
+	if [ "${PULL_DEV}" ] ; then
+		pull_dev
+	else
+		patch_kernel
+	fi
+
 	copy_defconfig
 fi
 if [ ! ${AUTO_BUILD} ] ; then

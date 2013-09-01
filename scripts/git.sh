@@ -135,11 +135,11 @@ git_kernel () {
 	if [ "${git_branch_has_list}" ] ; then
 		test_for_branch=$(git branch --list v${KERNEL_TAG}-${BUILD})
 		if [ "x${test_for_branch}" != "x" ] ; then
-			git branch v${KERNEL_TAG}-${BUILD} -D
+			git branch v${KERNEL_TAG}-${BUILD} -d
 		fi
 	else
 		echo "git: the following error: [error: branch 'v${KERNEL_TAG}-${BUILD}' not found.] is safe to ignore."
-		git branch v${KERNEL_TAG}-${BUILD} -D || true
+		git branch v${KERNEL_TAG}-${BUILD} -d || true
 	fi
 
 	if [ ! "${KERNEL_SHA}" ] ; then
