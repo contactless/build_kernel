@@ -135,11 +135,11 @@ git_kernel () {
 	if [ "${git_branch_has_list}" ] ; then
 		test_for_branch=$(git branch --list v${KERNEL_TAG}-${BUILD})
 		if [ "x${test_for_branch}" != "x" ] ; then
-			git branch v${KERNEL_TAG}-${BUILD} -D
+			git branch v${KERNEL_TAG}-${BUILD} -d
 		fi
 	else
 		echo "git: the following error: [error: branch 'v${KERNEL_TAG}-${BUILD}' not found.] is safe to ignore."
-		git branch v${KERNEL_TAG}-${BUILD} -D || true
+		git branch v${KERNEL_TAG}-${BUILD} -d || true
 	fi
 
 	if [ ! "${KERNEL_SHA}" ] ; then
@@ -152,6 +152,9 @@ git_kernel () {
 		git pull ${GIT_OPTS} ${torvalds_linux} master || true
 		git pull ${GIT_OPTS} ${torvalds_linux} master --tags || true
 	fi
+
+
+	git remote add dev ${dev_linux} -t v${KERNEL_TAG}-${BUILD} || echo "remote dev already exists (not a big deal)"
 
 	git describe
 
@@ -191,5 +194,7 @@ else
 	torvalds_linux="git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git"
 	linux_stable="git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git"
 fi
+
+dev_linux="git@github.com:evgeny-boger/linux.git"
 
 git_kernel
