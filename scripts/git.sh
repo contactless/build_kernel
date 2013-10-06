@@ -195,6 +195,6 @@ else
 	linux_stable="git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git"
 fi
 
-dev_linux="git@github.com:evgeny-boger/linux.git"
+dev_linux="git@github.com:contactless/linux.git"
 
 git_kernel
