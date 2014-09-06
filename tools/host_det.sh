@@ -90,7 +90,7 @@ redhat_reqs () {
 }
 
 suse_regs () {
-    local BUILD_HOST="$1"   
+    local BUILD_HOST="$1"
 # --- SuSE-release ---
     if [ ! -f /etc/SuSE-release ]
     then
@@ -98,8 +98,8 @@ suse_regs () {
 Missing /etc/SuSE-release file
  this file is part of the efault suse system. If this is a
  suse system for real, please install the package with:
-    
-    zypper install openSUSE-release   
+
+    zypper install openSUSE-release
 @@
         return 1
     fi
@@ -110,7 +110,7 @@ Missing /etc/SuSE-release file
     then
         cat >&2 <<@@
 Missing patch command,
- it is part of the opensuse $BUILD_HOST distribution so it can be 
+ it is part of the opensuse $BUILD_HOST distribution so it can be
  installed simply using:
 
     zypper install patch
@@ -128,7 +128,7 @@ Missing mkimage command.
  opensuse. It can be found under several places for suse.
  There are two ways to install the package: either using a rpm
  or using a repo.
- In the second case these are the command to issue in order to 
+ In the second case these are the command to issue in order to
  install it:
 
     zypper addrepo -f http://download.opensuse.org/repositories/home:/jblunck:/beagleboard/openSUSE_11.2
@@ -137,7 +137,7 @@ Missing mkimage command.
 @@
         return 1
     fi
-    
+
 }
 
 check_dpkg () {
@@ -231,7 +231,7 @@ debian_regs () {
 			unset error_unknown_deb_distro
 			unset warn_eol_distro
 			;;
-		lucid|precise|quantal|raring|saucy)
+		lucid|precise|quantal|raring|saucy|trusty)
 			#Supported Ubuntu:
 			unset error_unknown_deb_distro
 			unset warn_eol_distro
@@ -265,9 +265,10 @@ debian_regs () {
 		esac
 	fi
 
+
 	if [ $(which lsb_release) ] && [ ! "${stop_pkg_search}" ] ; then
 		deb_arch=$(LC_ALL=C dpkg --print-architecture)
-		
+
 		#pkg: mkimage
 		case "${deb_distro}" in
 		squeeze|lucid)
@@ -282,7 +283,7 @@ debian_regs () {
 
 		#Libs; starting with jessie/sid/saucy, lib<pkg_name>-dev:<arch>
 		case "${deb_distro}" in
-		jessie|sid|saucy)
+		jessie|sid|saucy|trusty)
 			pkg="libncurses5-dev:${deb_arch}"
 			check_dpkg
 			;;
@@ -291,7 +292,7 @@ debian_regs () {
 			check_dpkg
 			;;
 		esac
-		
+
 		#pkg: ia32-libs
 		if [ "x${deb_arch}" = "xamd64" ] ; then
 			unset dpkg_multiarch
@@ -300,11 +301,11 @@ debian_regs () {
 				pkg="ia32-libs"
 				check_dpkg
 				;;
-			wheezy|jessie|sid|quantal|raring|saucy)
+			wheezy|jessie|sid|quantal|raring|saucy|trusty)
 				pkg="libc6:i386"
 				check_dpkg
-				pkg="libncurses5:i386"
-				check_dpkg
+				#~ pkg="libncurses5:i386"
+				#~ check_dpkg
 				pkg="libstdc++6:i386"
 				check_dpkg
 				pkg="zlib1g:i386"
