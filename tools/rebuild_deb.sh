@@ -130,6 +130,7 @@ make_pkg () {
 }
 
 make_firmware_pkg () {
+	echo "make_firmware_pkg"
 	pkg="firmware"
 	make_pkg
 }
@@ -180,7 +181,7 @@ if [ ! ${AUTO_BUILD} ] ; then
 	make_menuconfig
 fi
 make_deb
-make_firmware_pkg
-if [ "x${DTBS}" != "x" ] ; then
-	make_dtbs_pkg
-fi
+#~ make_firmware_pkg
+#~ if [ "x${DTBS}" != "x" ] ; then
+	#~ make_dtbs_pkg
+#~ fi
