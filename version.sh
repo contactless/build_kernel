@@ -36,5 +36,5 @@ BUILD=imxv5-x0.1
 BRANCH="v3.13.x-imxv5"
 
 BUILDREV=1.0
-DISTRO=cross
+DISTRO=wb
 DEBARCH=armel

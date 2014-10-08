@@ -22,6 +22,7 @@
 
 DIR=$PWD
 
+
 mkdir -p ${DIR}/deploy/
 
 patch_kernel () {
@@ -65,11 +66,7 @@ make_menuconfig () {
 
 make_deb () {
 	cd ${DIR}/KERNEL/
-	echo "-----------------------------"
-	echo "make -j${CORES} ARCH=arm KBUILD_DEBARCH=${DEBARCH} LOCALVERSION=-${BUILD} CROSS_COMPILE=${CC} KDEB_PKGVERSION=${BUILDREV}${DISTRO} deb-pkg"
-	echo "-----------------------------"
-	fakeroot make -j${CORES} ARCH=arm KBUILD_DEBARCH=${DEBARCH} LOCALVERSION=-${BUILD} CROSS_COMPILE=${CC} KDEB_PKGVERSION=${BUILDREV}${DISTRO} deb-pkg
-	mv ${DIR}/*.deb ${DIR}/deploy/
+	make -j${CORES} ARCH=arm KBUILD_DEBARCH=${DEBARCH} LOCALVERSION=-${BUILD} CROSS_COMPILE=${CC}  zImage modules
 
 	unset DTBS
 	cat ${DIR}/KERNEL/arch/arm/Makefile | grep "dtbs:" >/dev/null 2>&1 && DTBS=1
@@ -81,7 +78,48 @@ make_deb () {
 		ls arch/arm/boot/* | grep dtb >/dev/null 2>&1 || unset DTBS
 	fi
 
+	echo "-----------------------------"
+	echo "make -j${CORES} ARCH=arm KBUILD_DEBARCH=${DEBARCH} LOCALVERSION=-${BUILD} CROSS_COMPILE=${CC} KDEB_PKGVERSION=${DEB_PKGVERSION} deb-pkg"
+	echo "-----------------------------"
+	fakeroot make -j${CORES} ARCH=arm KBUILD_DEBARCH=${DEBARCH} LOCALVERSION=-${BUILD} CROSS_COMPILE=${CC} KDEB_PKGVERSION=${DEB_PKGVERSION} deb-pkg
+	mv ${DIR}/*.deb ${DIR}/deploy/
+
+
 	KERNEL_UTS=$(cat ${DIR}/KERNEL/include/generated/utsrelease.h | awk '{print $3}' | sed 's/\"//g' )
+	echo "kernel uts= $KERNEL_UTS"
+
+	ln -s -f linux-image-${KERNEL_UTS}_${DEB_PKGVERSION}_armel.deb ${DIR}/deploy/linux-image_armel.deb
+	ln -s -f linux-firmware-image-${KERNEL_UTS}_${DEB_PKGVERSION}_armel.deb ${DIR}/deploy/linux-firmware-image_armel.deb
+	ln -s -f linux-headers-${KERNEL_UTS}_${DEB_PKGVERSION}_armel.deb ${DIR}/deploy/linux-headers_armel.deb
+	ln -s -f linux-libc-dev_${DEB_PKGVERSION}_armel.deb ${DIR}/deploy/linux-libc-dev_armel.deb
+
+
+	METATMPDIR=`mktemp -d`
+	METAPKGNAME="linux-latest_${DEB_PKGVERSION}_all"
+	mkdir $METATMPDIR/${METAPKGNAME}
+	mkdir $METATMPDIR/${METAPKGNAME}/DEBIAN
+	cat <<EOF > "$METATMPDIR/${METAPKGNAME}/DEBIAN/control"
+Package: linux-latest
+Version: $DEB_PKGVERSION
+Section: main
+Priority: optional
+Architecture: all
+Depends: linux-image-3.13.0-imxv5-x0.1, linux-firmware-image-3.13.0-imxv5-x0.1
+Installed-Size:
+Maintainer: Evgeny Boger
+Description: A metapackage for latest Linux kernel for Wiren Board
+EOF
+
+	dpkg --build ${METATMPDIR}/${METAPKGNAME}
+
+	cp ${METATMPDIR}/${METAPKGNAME}.deb ${DIR}/deploy/
+	ln -s -f ${DIR}/deploy/${METAPKGNAME}.deb ${DIR}/deploy/linux-latest_all.deb
+	rm -rf ${METATMPDIR}
+
+
+
+
+
 
 	cd ${DIR}/
 }
@@ -158,6 +196,10 @@ unset LINUX_GIT
 echo "debug: CC=${CC}"
 
 . ${DIR}/version.sh
+BUILDREV=`date -u +%Y%m%d%H%M%S`
+DEB_PKGVERSION=${KERNEL_REL}-${BUILD}+${DISTRO}${BUILDREV}
+
+
 export LINUX_GIT
 
 unset FULL_REBUILD
