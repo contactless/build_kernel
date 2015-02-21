@@ -104,7 +104,7 @@ Version: $DEB_PKGVERSION
 Section: main
 Priority: optional
 Architecture: all
-Depends: linux-image-3.13.0-imxv5-x0.1, linux-firmware-image-3.13.0-imxv5-x0.1
+Depends: linux-image-${KERNEL_UTS} (>= $DEB_PKGVERSION), linux-firmware-image-${KERNEL_UTS} (>= $DEB_PKGVERSION), wb-configs (>= 1.04)
 Installed-Size:
 Maintainer: Evgeny Boger
 Description: A metapackage for latest Linux kernel for Wiren Board
