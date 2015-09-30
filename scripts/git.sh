@@ -119,7 +119,7 @@ git_kernel () {
 	git commit --allow-empty -a -m 'empty cleanup commit'
 
 	git reset --hard HEAD
-	git checkout master -f
+	git checkout $BRANCH -f
 
 	git pull ${GIT_OPTS} || true
 

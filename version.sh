@@ -33,7 +33,8 @@ BUILD=imxv5-x0.1
 #KERNEL_SHA=""
 
 #git branch
-BRANCH="v3.19.x-imxv5"
+#BRANCH="v3.19.x-imxv5"
+BRANCH="v3.19-imx5-x0.1"
 
 BUILDREV=1.0
 DISTRO=wb
