@@ -225,13 +225,14 @@ debian_regs () {
 			;;
 		esac
 
+
 		case "${deb_distro}" in
 		squeeze|wheezy|jessie|sid)
 			#Supported Debian:
 			unset error_unknown_deb_distro
 			unset warn_eol_distro
 			;;
-		lucid|precise|quantal|raring|saucy|trusty)
+		vivid|lucid|precise|quantal|raring|saucy|trusty|utopic|vidid)
 			#Supported Ubuntu:
 			unset error_unknown_deb_distro
 			unset warn_eol_distro
@@ -265,7 +266,7 @@ debian_regs () {
 		esac
 	fi
 
-
+	stop_pkg_search=1
 	if [ $(which lsb_release) ] && [ ! "${stop_pkg_search}" ] ; then
 		deb_arch=$(LC_ALL=C dpkg --print-architecture)
 
