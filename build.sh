@@ -1,6 +1,7 @@
-#!/bin/sh -e
+#!/bin/bash -e
 #
 # Copyright (c) 2009-2013 Robert Nelson <robertcnelson@gmail.com>
+# Copyright (c) 2013-2015 Evgeny Boger <boger@contactless.ru>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -20,46 +21,17 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
+
+source version.sh
+
 DIR=$PWD
 
 mkdir -p ${DIR}/deploy/
 
-patch_kernel () {
-	cd ${DIR}/KERNEL
-
-	export DIR GIT_OPTS
-	/bin/sh -e ${DIR}/patch.sh || { git add . ; exit 1 ; }
-
-	if [ ! "${RUN_BISECT}" ] ; then
-		git add --all
-		git commit --allow-empty -a -m "${KERNEL_TAG}-${BUILD} patchset"
-	fi
-
-	cd ${DIR}/
-}
-
-pull_dev () {
-	cd ${DIR}/KERNEL
-	export DIR GIT_OPTS
-	echo "pulling dev repo"
-	git pull dev
-
-	cd ${DIR}/
-}
-
-copy_defconfig () {
-	cd ${DIR}/KERNEL/
-	make ARCH=arm CROSS_COMPILE=${CC} distclean
-	make ARCH=arm CROSS_COMPILE=${CC} ${config}
-	cp -v .config ${DIR}/patches/ref_${config}
-	cp -v ${DIR}/patches/defconfig .config
-	cd ${DIR}/
-}
-
 make_menuconfig () {
 	cd ${DIR}/KERNEL/
 	make ARCH=arm CROSS_COMPILE=${CC} menuconfig
-	cp -v .config ${DIR}/patches/defconfig
+	#~ cp -v .config ${DIR}/patches/defconfig
 	cd ${DIR}/
 }
 
@@ -67,9 +39,6 @@ make_kernel () {
 	image="zImage"
 	unset address
 
-	#uImage, if you really really want a uImage, zreladdr needs to be defined on the build line going forward...
-	#image="uImage"
-	#address="LOADADDR=${ZRELADDR}"
 
 	cd ${DIR}/KERNEL/
 	echo "-----------------------------"
@@ -167,66 +136,8 @@ make_dtbs_pkg () {
 	make_pkg
 }
 
-/bin/sh -e ${DIR}/tools/host_det.sh || { exit 1 ; }
 
-if [ ! -f ${DIR}/system.sh ] ; then
-	cp ${DIR}/system.sh.sample ${DIR}/system.sh
-else
-	#fixes for bash -> sh conversion...
-	sed -i 's/bash/sh/g' ${DIR}/system.sh
-	sed -i 's/==/=/g' ${DIR}/system.sh
-fi
-
-if [ -f "${DIR}/branches.list" ] ; then
-	echo "-----------------------------"
-	echo "Please checkout one of the active branches:"
-	echo "-----------------------------"
-	cat ${DIR}/branches.list | grep -v INACTIVE
-	echo "-----------------------------"
-	exit
-fi
-
-if [ -f "${DIR}/branch.expired" ] ; then
-	echo "-----------------------------"
-	echo "Support for this branch has expired."
-	unset response
-	echo -n "Do you wish to bypass this warning and support your self: (y/n)? "
-	read response
-	if [ "x${response}" != "xy" ] ; then
-		exit
-	fi
-	echo "-----------------------------"
-fi
-
-unset CC
-unset LINUX_GIT
-. ${DIR}/system.sh
-/bin/sh -e "${DIR}/scripts/gcc.sh" || { exit 1 ; }
-. ${DIR}/.CC
-echo "debug: CC=${CC}"
-
-. ${DIR}/version.sh
-export LINUX_GIT
-
-#unset FULL_REBUILD
-FULL_REBUILD=1
-if [ "${FULL_REBUILD}" ] ; then
-	/bin/sh -e "${DIR}/scripts/git.sh" || { exit 1 ; }
-
-	if [ "${RUN_BISECT}" ] ; then
-		/bin/sh -e "${DIR}/scripts/bisect.sh" || { exit 1 ; }
-	fi
-
-	if [ "${PULL_DEV}" ] ; then
-		pull_dev
-	else
-		patch_kernel
-	fi
-	copy_defconfig
-fi
-if [ ! ${AUTO_BUILD} ] ; then
-	make_menuconfig
-fi
+#~ make_menuconfig
 make_kernel
 make_modules_pkg
 make_firmware_pkg
@@ -235,5 +146,5 @@ if [ "x${DTBS}" != "x" ] ; then
 fi
 echo "-----------------------------"
 echo "Script Complete"
-echo "eewiki.net: [user@localhost:~$ export kernel_version=${KERNEL_UTS}]"
+echo "$ export kernel_version=${KERNEL_UTS}]"
 echo "-----------------------------"
