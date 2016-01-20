@@ -11,11 +11,11 @@ else
 fi
 
 #Kernel/Build
-KERNEL_REL=3.19
+KERNEL_REL=4.1
 KERNEL_TAG=${KERNEL_REL}
 BUILD=imxv5-x0.1
 
-BRANCH="v3.19.x-imxv5"
+BRANCH="dev/v4.1.15"
 
 BUILDREV=1.0
 DISTRO=wb
