@@ -61,7 +61,7 @@ make_deb () {
 	echo "kernel uts= $KERNEL_UTS"
 
 	ln -s -f linux-image-${KERNEL_UTS}_${DEB_PKGVERSION}_armel.deb ${DIR}/deploy/linux-image_armel.deb
-	ln -s -f linux-firmware-image-${KERNEL_UTS}_${DEB_PKGVERSION}_armel.deb ${DIR}/deploy/linux-firmware-image_armel.deb
+	ln -s -f linux-firmware-image-${KERNEL_UTS}_${DEB_PKGVERSION}_all.deb ${DIR}/deploy/linux-firmware-image_all.deb
 	ln -s -f linux-headers-${KERNEL_UTS}_${DEB_PKGVERSION}_armel.deb ${DIR}/deploy/linux-headers_armel.deb
 	ln -s -f linux-libc-dev_${DEB_PKGVERSION}_armel.deb ${DIR}/deploy/linux-libc-dev_armel.deb
 
@@ -85,7 +85,7 @@ EOF
 	dpkg --build ${METATMPDIR}/${METAPKGNAME}
 
 	cp ${METATMPDIR}/${METAPKGNAME}.deb ${DIR}/deploy/
-	ln -s -f ${DIR}/deploy/${METAPKGNAME}.deb ${DIR}/deploy/linux-latest_all.deb
+	ln -s -f ${METAPKGNAME}.deb ${DIR}/deploy/linux-latest_all.deb
 	rm -rf ${METATMPDIR}
 
 
