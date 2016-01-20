@@ -36,6 +36,45 @@ make_menuconfig () {
 	cd ${DIR}/
 }
 
+make_deb_dtc() {
+	local DTCVERSION="1.4.1+${DISTRO}${BUILDREV}"
+	local DTCPKGNAME="device-tree-compiler_${DTCVERSION}_armel"
+	local DTCTMPDIR=`mktemp -d`
+
+	[[ -e "${DIR}/KERNEL/scripts/dtc/Makefile.standalone" ]] || {
+		echo "Not building device-tree-compiler for armel due to absence of Makefile.standalone"
+		return
+	}
+
+	pushd ${DIR}/KERNEL/scripts/dtc
+	make -f Makefile.standalone clean &&
+	make -f Makefile.standalone CC=${CC}gcc &&
+	fakeroot make -f Makefile.standalone DESTDIR=$DTCTMPDIR/$DTCPKGNAME install
+	ret=$?
+	popd
+
+	[[ $ret != 0 ]] && {
+		echo "DTC build failed"
+		return $ret
+	}
+
+	mkdir -p ${DTCTMPDIR}/${DTCPKGNAME}/DEBIAN
+	cat > ${DTCTMPDIR}/${DTCPKGNAME}/DEBIAN/control <<EOF
+Package: device-tree-compiler
+Version: ${DTCVERSION}
+Architecture: armel
+Maintainer: Alexey Ignatov <lexszero@gmail.com>
+Depends: libc6 (>= 2.7)
+Section: devel
+Priority: optional
+Description: Device Tree Compiler for Flat Device Trees with overlays support
+EOF
+	dpkg --build ${DTCTMPDIR}/${DTCPKGNAME}
+	cp ${DTCTMPDIR}/${DTCPKGNAME}.deb ${DIR}/deploy/
+	ln -s -f ${DTCPKGNAME}.deb ${DIR}/deploy/device-tree-compiler_armel.deb
+	rm -rf ${DTCTMPDIR}
+}
+
 make_deb () {
 	cd ${DIR}/KERNEL
 	make -j${CORES} ARCH=arm KBUILD_DEBARCH=${DEBARCH} LOCALVERSION=-${BUILD} CROSS_COMPILE=${CC}  zImage modules
@@ -101,6 +140,7 @@ DEB_PKGVERSION=${KERNEL_REL}-${BUILD}+${DISTRO}${BUILDREV}
 
 #~ make_menuconfig
 make_deb
+make_deb_dtc
 
 echo "-----------------------------"
 echo "Script Complete"
