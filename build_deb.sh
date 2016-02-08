@@ -51,6 +51,7 @@ make_deb_dtc() {
 	make -f Makefile.standalone CC=${CC}gcc &&
 	fakeroot make -f Makefile.standalone DESTDIR=$DTCTMPDIR/$DTCPKGNAME install
 	ret=$?
+	fakeroot make -f Makefile.standalone clean
 	popd
 
 	[[ $ret != 0 ]] && {
