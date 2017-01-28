@@ -28,6 +28,21 @@ DIR=$PWD
 
 mkdir -p ${DIR}/deploy/
 
+make_config() {
+	cd ${DIR}/KERNEL
+	if [[ -e ".config" ]]; then
+		echo ".config already present"
+		read -n 1 -p "Use $KERNEL_DEFCONFIG instead? (y/N) " yn
+		echo
+		if [[ "$yn" == "y" ]]; then
+			make ARCH=arm $KERNEL_DEFCONFIG
+		else
+			echo "Using existing .config"
+		fi
+	else
+		make ARCH=arm $KERNEL_DEFCONFIG
+	fi
+}
 
 make_menuconfig () {
 	cd ${DIR}/KERNEL
@@ -143,6 +158,7 @@ echo "Building kernel packages"
 echo "Architecture: ${DEBARCH}"
 echo "Package version: ${DEB_PKGVERSION}"
 
+make_config
 #~ make_menuconfig
 make_deb
 make_deb_dtc
