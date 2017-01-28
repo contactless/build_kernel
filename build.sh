@@ -41,6 +41,12 @@ make_kernel () {
 
 
 	cd ${DIR}/KERNEL/
+
+	# Cleanup DTC in case there are ARM build leftovers
+	pushd scripts/dtc
+	make -f Makefile.standalone clean
+	popd
+
 	echo "-----------------------------"
 	echo "make -j${CORES} ARCH=arm LOCALVERSION=-${BUILD} CROSS_COMPILE=${CC} ${address} ${image} modules"
 	echo "-----------------------------"
