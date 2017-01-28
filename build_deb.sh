@@ -55,6 +55,7 @@ make_deb_dtc() {
 	local DTCVERSION="1.4.1+${DISTRO}${BUILDREV}"
 	local DTCPKGNAME="device-tree-compiler_${DTCVERSION}_${DEBARCH}"
 	local DTCTMPDIR=`mktemp -d`
+	unset TARGET_ARCH	# it breaks dtc build for some strange reason
 
 	[[ -e "${DIR}/KERNEL/scripts/dtc/Makefile.standalone" ]] || {
 		echo "Not building device-tree-compiler for ${DEBARCH} due to absence of Makefile.standalone"
@@ -106,9 +107,9 @@ make_deb () {
 	fi
 
 	echo "-----------------------------"
-	echo "make -j${CORES} ARCH=arm KBUILD_DEBARCH=${DEBARCH} LOCALVERSION=-${BUILD} CROSS_COMPILE=${CC} KDEB_PKGVERSION=${DEB_PKGVERSION} deb-pkg"
+	echo "make -j${CORES} ARCH=arm KBUILD_DEBARCH=${DEBARCH} LOCALVERSION=-${BUILD} CROSS_COMPILE=${CC} KDEB_PKGVERSION=${DEB_PKGVERSION} bindeb-pkg"
 	echo "-----------------------------"
-	fakeroot make -j${CORES} ARCH=arm KBUILD_DEBARCH=${DEBARCH} LOCALVERSION=-${BUILD} CROSS_COMPILE=${CC} KDEB_PKGVERSION=${DEB_PKGVERSION} deb-pkg
+	fakeroot make -j${CORES} ARCH=arm KBUILD_DEBARCH=${DEBARCH} LOCALVERSION=-${BUILD} CROSS_COMPILE=${CC} KDEB_PKGVERSION=${DEB_PKGVERSION} bindeb-pkg
 	mv ${DIR}/*.deb ${DIR}/deploy/
 
 

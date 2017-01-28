@@ -10,10 +10,10 @@ else
 fi
 
 #Kernel/Build
-KERNEL_REL=4.1
+KERNEL_REL=4.9
 KERNEL_TAG=${KERNEL_REL}
 
-BRANCH="dev/v4.1.15"
+BRANCH="dev/v4.9.6"
 
 BUILDREV=1.0
 DISTRO=wb
