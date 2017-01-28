@@ -38,11 +38,11 @@ make_menuconfig () {
 
 make_deb_dtc() {
 	local DTCVERSION="1.4.1+${DISTRO}${BUILDREV}"
-	local DTCPKGNAME="device-tree-compiler_${DTCVERSION}_armel"
+	local DTCPKGNAME="device-tree-compiler_${DTCVERSION}_${DEBARCH}"
 	local DTCTMPDIR=`mktemp -d`
 
 	[[ -e "${DIR}/KERNEL/scripts/dtc/Makefile.standalone" ]] || {
-		echo "Not building device-tree-compiler for armel due to absence of Makefile.standalone"
+		echo "Not building device-tree-compiler for ${DEBARCH} due to absence of Makefile.standalone"
 		return
 	}
 
@@ -63,7 +63,7 @@ make_deb_dtc() {
 	cat > ${DTCTMPDIR}/${DTCPKGNAME}/DEBIAN/control <<EOF
 Package: device-tree-compiler
 Version: ${DTCVERSION}
-Architecture: armel
+Architecture: ${DEBARCH}
 Maintainer: Alexey Ignatov <lexszero@gmail.com>
 Depends: libc6 (>= 2.7)
 Section: devel
@@ -72,7 +72,7 @@ Description: Device Tree Compiler for Flat Device Trees with overlays support
 EOF
 	dpkg --build ${DTCTMPDIR}/${DTCPKGNAME}
 	cp ${DTCTMPDIR}/${DTCPKGNAME}.deb ${DIR}/deploy/
-	ln -s -f ${DTCPKGNAME}.deb ${DIR}/deploy/device-tree-compiler_armel.deb
+	ln -s -f ${DTCPKGNAME}.deb ${DIR}/deploy/device-tree-compiler_${DEBARCH}.deb
 	rm -rf ${DTCTMPDIR}
 }
 
@@ -100,10 +100,10 @@ make_deb () {
 	KERNEL_UTS=$(cat ${DIR}/KERNEL/include/generated/utsrelease.h | awk '{print $3}' | sed 's/\"//g' )
 	echo "kernel uts= $KERNEL_UTS"
 
-	ln -s -f linux-image-${KERNEL_UTS}_${DEB_PKGVERSION}_armel.deb ${DIR}/deploy/linux-image_armel.deb
+	ln -s -f linux-image-${KERNEL_UTS}_${DEB_PKGVERSION}_${DEBARCH}.deb ${DIR}/deploy/linux-image_${DEBARCH}.deb
 	ln -s -f linux-firmware-image-${KERNEL_UTS}_${DEB_PKGVERSION}_all.deb ${DIR}/deploy/linux-firmware-image_all.deb
-	ln -s -f linux-headers-${KERNEL_UTS}_${DEB_PKGVERSION}_armel.deb ${DIR}/deploy/linux-headers_armel.deb
-	ln -s -f linux-libc-dev_${DEB_PKGVERSION}_armel.deb ${DIR}/deploy/linux-libc-dev_armel.deb
+	ln -s -f linux-headers-${KERNEL_UTS}_${DEB_PKGVERSION}_${DEBARCH}.deb ${DIR}/deploy/linux-headers_${DEBARCH}.deb
+	ln -s -f linux-libc-dev_${DEB_PKGVERSION}_${DEBARCH}.deb ${DIR}/deploy/linux-libc-dev_${DEBARCH}.deb
 
 
 	METATMPDIR=`mktemp -d`
@@ -138,6 +138,10 @@ EOF
 
 BUILDREV=`date -u +%Y%m%d%H%M%S`
 DEB_PKGVERSION=${KERNEL_REL}-${BUILD}+${DISTRO}${BUILDREV}
+
+echo "Building kernel packages"
+echo "Architecture: ${DEBARCH}"
+echo "Package version: ${DEB_PKGVERSION}"
 
 #~ make_menuconfig
 make_deb
