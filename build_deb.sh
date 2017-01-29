@@ -46,7 +46,7 @@ make_config() {
 
 make_menuconfig () {
 	cd ${DIR}/KERNEL
-	make ARCH=arm CROSS_COMPILE=${CC} menuconfig
+	make ARCH=arm menuconfig
 	#~ cp -v .config ${DIR}/patches/defconfig
 	cd ${DIR}/
 }
@@ -64,7 +64,7 @@ make_deb_dtc() {
 
 	pushd ${DIR}/KERNEL/scripts/dtc
 	make -f Makefile.standalone clean &&
-	make -f Makefile.standalone CC=${CC}gcc &&
+	make -f Makefile.standalone CC=${CROSS_COMPILE}gcc &&
 	fakeroot make -f Makefile.standalone DESTDIR=$DTCTMPDIR/$DTCPKGNAME install
 	ret=$?
 	fakeroot make -f Makefile.standalone clean
@@ -94,22 +94,22 @@ EOF
 
 make_deb () {
 	cd ${DIR}/KERNEL
-	make -j${CORES} ARCH=arm KBUILD_DEBARCH=${DEBARCH} LOCALVERSION=-${BUILD} CROSS_COMPILE=${CC}  zImage modules
+	make -j${CORES} ARCH=arm KBUILD_DEBARCH=${DEBARCH}  zImage modules
 
 	unset DTBS
 	cat ${DIR}/KERNEL/arch/arm/Makefile | grep "dtbs:" >/dev/null 2>&1 && DTBS=1
 	if [ "x${DTBS}" != "x" ] ; then
 		echo "-----------------------------"
-		echo "make -j${CORES} ARCH=arm LOCALVERSION=-${BUILD} CROSS_COMPILE=${CC} dtbs"
+		echo "make -j${CORES} ARCH=arm dtbs"
 		echo "-----------------------------"
-		make -j${CORES} ARCH=arm LOCALVERSION=-${BUILD} CROSS_COMPILE=${CC} dtbs
+		make -j${CORES} ARCH=arm dtbs
 		ls arch/arm/boot/* | grep dtb >/dev/null 2>&1 || unset DTBS
 	fi
 
 	echo "-----------------------------"
-	echo "make -j${CORES} ARCH=arm KBUILD_DEBARCH=${DEBARCH} LOCALVERSION=-${BUILD} CROSS_COMPILE=${CC} KDEB_PKGVERSION=${DEB_PKGVERSION} bindeb-pkg"
+	echo "make -j${CORES} ARCH=arm KBUILD_DEBARCH=${DEBARCH} KDEB_PKGVERSION=${DEB_PKGVERSION} bindeb-pkg"
 	echo "-----------------------------"
-	fakeroot make -j${CORES} ARCH=arm KBUILD_DEBARCH=${DEBARCH} LOCALVERSION=-${BUILD} CROSS_COMPILE=${CC} KDEB_PKGVERSION=${DEB_PKGVERSION} bindeb-pkg
+	fakeroot make -j${CORES} ARCH=arm KBUILD_DEBARCH=${DEBARCH} KDEB_PKGVERSION=${DEB_PKGVERSION} bindeb-pkg
 	mv ${DIR}/*.deb ${DIR}/deploy/
 
 
@@ -153,7 +153,7 @@ EOF
 }
 
 BUILDREV=`date -u +%Y%m%d%H%M%S`
-DEB_PKGVERSION=${KERNEL_REL}-${BUILD}+${DISTRO}${BUILDREV}
+DEB_PKGVERSION=${KERNEL_REL}+${DISTRO}${BUILDREV}
 
 echo "Building kernel packages"
 echo "Architecture: ${DEBARCH}"

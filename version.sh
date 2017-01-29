@@ -17,6 +17,7 @@ BRANCH="dev/v4.9.6"
 
 BUILDREV=1.0
 DISTRO=wb
+LOCALVERSION=-wb
 
 if [[ -z "$TARGET_ARCH" ]]; then
 	echo "Warning: TARGET_ARCH is unset, assuming armel"
@@ -27,13 +28,13 @@ case "$TARGET_ARCH" in
 	armel)
 		DEBARCH=armel
 		KERNEL_DEFCONFIG=mxs_wirenboard_defconfig
-		BUILD=imxv5-x0.1
-		CC=arm-linux-gnueabi-
+		CROSS_COMPILE=arm-linux-gnueabi-
 		;;
 	armhf)
 		DEBARCH=armhf
 		KERNEL_DEFCONFIG=imx6_wirenboard_defconfig
-		BUILD=imxv6-x0.1
-		CC=arm-linux-gnueabihf-
+		CROSS_COMPILE=arm-linux-gnueabihf-
 		;;
 esac
+
+export CROSS_COMPILE LOCALVERSION
