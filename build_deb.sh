@@ -93,6 +93,11 @@ EOF
 }
 
 make_deb () {
+	[[ -e "$(which depmod)" ]] || {
+		echo "Need depmod to build modules correctly. Please install kmod package"
+		exit 1
+	}
+
 	cd ${DIR}/KERNEL
 	make -j${CORES} ARCH=arm KBUILD_DEBARCH=${DEBARCH}  zImage modules
 
