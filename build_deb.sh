@@ -123,7 +123,7 @@ make_deb () {
 
 
 	METATMPDIR=`mktemp -d`
-	METAPKGNAME="linux-latest_${DEB_PKGVERSION}_all"
+	METAPKGNAME="linux-latest_${DEB_PKGVERSION}_${DEBARCH}"
 	mkdir $METATMPDIR/${METAPKGNAME}
 	mkdir $METATMPDIR/${METAPKGNAME}/DEBIAN
 	cat <<EOF > "$METATMPDIR/${METAPKGNAME}/DEBIAN/control"
@@ -131,7 +131,7 @@ Package: linux-latest
 Version: $DEB_PKGVERSION
 Section: main
 Priority: optional
-Architecture: all
+Architecture: $DEBARCH
 Depends: linux-image-${KERNEL_UTS} (>= $DEB_PKGVERSION), linux-firmware-image-${KERNEL_UTS} (>= $DEB_PKGVERSION), wb-configs (>= 1.04)
 Installed-Size:
 Maintainer: Evgeny Boger
@@ -141,7 +141,7 @@ EOF
 	dpkg --build ${METATMPDIR}/${METAPKGNAME}
 
 	cp ${METATMPDIR}/${METAPKGNAME}.deb ${DIR}/deploy/
-	ln -s -f ${METAPKGNAME}.deb ${DIR}/deploy/linux-latest_all.deb
+	ln -s -f ${METAPKGNAME}.deb ${DIR}/deploy/linux-latest_${DEBARCH}.deb
 	rm -rf ${METATMPDIR}
 
 
