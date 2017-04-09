@@ -1,6 +1,5 @@
 #!/bin/sh
 
-
 ARCH=$(uname -m)
 
 if [ $(which nproc) ] ; then
@@ -9,32 +8,54 @@ else
 	CORES=1
 fi
 
-#Kernel/Build
-KERNEL_REL=4.9
-KERNEL_TAG=${KERNEL_REL}
+DIR=$PWD
+SRCDIR=$DIR/KERNEL
+PKGDIR=$DIR/deploy
+mkdir -p "$PKGDIR"
 
-BRANCH="dev/v4.9.6"
+BRANCH="dev/v4.9.x"
 
-BUILDREV=1.0
 DISTRO=wb
-LOCALVERSION=-wb
+KERNEL_REL=4.9
 
-if [[ -z "$TARGET_ARCH" ]]; then
-	echo "Warning: TARGET_ARCH is unset, assuming armel"
-	TARGET_ARCH=armel
-fi
+setup_kernel_vars() {
+	case "$KERNEL_FLAVOUR" in
+		wb2)
+			DEBARCH=armel
+			KERNEL_DEFCONFIG=mxs_wirenboard_defconfig
+			FLAVOUR_DESC="Wiren Board 2-5"
+			;;
+		wb6)
+			DEBARCH=armhf
+			KERNEL_DEFCONFIG=imx6_wirenboard_defconfig
+			FLAVOUR_DESC="Wiren Board 6"
+			;;
+		*)
+			echo "Unsupported KERNEL_FLAVOUR, please specify one of: wb2, wb6"
+			return 1
+	esac
+	LOCALVERSION=-${KERNEL_FLAVOUR}
+	export DEBARCH KERNEL_DEFCONFIG FLAVOUR_DESC LOCALVERSION
 
-case "$TARGET_ARCH" in
-	armel)
-		DEBARCH=armel
-		KERNEL_DEFCONFIG=mxs_wirenboard_defconfig
-		CROSS_COMPILE=arm-linux-gnueabi-
-		;;
-	armhf)
-		DEBARCH=armhf
-		KERNEL_DEFCONFIG=imx6_wirenboard_defconfig
-		CROSS_COMPILE=arm-linux-gnueabihf-
-		;;
-esac
+	setup_deb_vars
 
-export CROSS_COMPILE LOCALVERSION
+	DEB_PKGVERSION=${KERNEL_REL}+${DISTRO}${BUILDREV}
+	export DEB_PKGVERSION
+}
+
+setup_deb_vars() {
+	case "$DEBARCH" in
+		armel)
+			CROSS_COMPILE=arm-linux-gnueabi-
+			;;
+		armhf)
+			CROSS_COMPILE=arm-linux-gnueabihf-
+			;;
+		*)
+			echo "Unsupported DEBARCH, please specify one of: armel, armhf"
+			return 1
+			;;
+	esac
+	[[ -z "$BUILDREV" ]] && BUILDREV=`date -u +%Y%m%d%H%M%S`
+	export CROSS_COMPILE BUILDREV DEB_PKGVERSION
+}

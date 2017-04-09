@@ -22,14 +22,13 @@
 # THE SOFTWARE.
 
 source version.sh
+setup_kernel_vars || exit $?
 
-DIR=$PWD
-
-
-mkdir -p ${DIR}/deploy/
+export KBUILD_OUTPUT=$DIR/build/$KERNEL_FLAVOUR
+mkdir -p "$KBUILD_OUTPUT"
 
 make_config() {
-	cd ${DIR}/KERNEL
+	pushd "$SRCDIR"
 	if [[ -e ".config" ]]; then
 		echo ".config already present"
 		read -n 1 -p "Use $KERNEL_DEFCONFIG instead? (y/N) " yn
@@ -42,13 +41,14 @@ make_config() {
 	else
 		make ARCH=arm $KERNEL_DEFCONFIG
 	fi
+	popd
 }
 
 make_menuconfig () {
-	cd ${DIR}/KERNEL
+	pushd "$SRCDIR"
 	make ARCH=arm menuconfig
 	#~ cp -v .config ${DIR}/patches/defconfig
-	cd ${DIR}/
+	popd
 }
 
 make_deb_dtc() {
@@ -98,24 +98,23 @@ make_deb () {
 		exit 1
 	}
 
-	cd ${DIR}/KERNEL
+	pushd "${SRCDIR}"
 	make -j${CORES} ARCH=arm KBUILD_DEBARCH=${DEBARCH} zImage modules dtbs
 	
 	echo "-----------------------------"
 	echo "make -j${CORES} ARCH=arm KBUILD_DEBARCH=${DEBARCH} KDEB_PKGVERSION=${DEB_PKGVERSION} bindeb-pkg"
 	echo "-----------------------------"
 	fakeroot make -j${CORES} ARCH=arm KBUILD_DEBARCH=${DEBARCH} KDEB_PKGVERSION=${DEB_PKGVERSION} bindeb-pkg
-	mv ${DIR}/*.deb ${DIR}/deploy/
+	mv ${KBUILD_OUTPUT}/../*.deb ${PKGDIR}
 
 
-	KERNEL_UTS=$(cat ${DIR}/KERNEL/include/generated/utsrelease.h | awk '{print $3}' | sed 's/\"//g' )
+	KERNEL_UTS=$(cat ${KBUILD_OUTPUT}/include/generated/utsrelease.h | awk '{print $3}' | sed 's/\"//g' )
 	echo "kernel uts= $KERNEL_UTS"
 
-	ln -s -f linux-image-${KERNEL_UTS}_${DEB_PKGVERSION}_${DEBARCH}.deb ${DIR}/deploy/linux-image_${DEBARCH}.deb
-	ln -s -f linux-firmware-image-${KERNEL_UTS}_${DEB_PKGVERSION}_all.deb ${DIR}/deploy/linux-firmware-image_all.deb
-	ln -s -f linux-headers-${KERNEL_UTS}_${DEB_PKGVERSION}_${DEBARCH}.deb ${DIR}/deploy/linux-headers_${DEBARCH}.deb
-	ln -s -f linux-libc-dev_${DEB_PKGVERSION}_${DEBARCH}.deb ${DIR}/deploy/linux-libc-dev_${DEBARCH}.deb
-
+	ln -s -f linux-image-${KERNEL_UTS}_${DEB_PKGVERSION}_${DEBARCH}.deb ${PKGDIR}/linux-image_${DEBARCH}.deb
+	ln -s -f linux-firmware-image-${KERNEL_UTS}_${DEB_PKGVERSION}_all.deb ${PKGDIR}/linux-firmware-image_all.deb
+	ln -s -f linux-headers-${KERNEL_UTS}_${DEB_PKGVERSION}_${DEBARCH}.deb ${PKGDIR}/linux-headers_${DEBARCH}.deb
+	ln -s -f linux-libc-dev_${DEB_PKGVERSION}_${DEBARCH}.deb ${PKGDIR}/linux-libc-dev_${DEBARCH}.deb
 
 	METATMPDIR=`mktemp -d`
 	METAPKGNAME="linux-latest_${DEB_PKGVERSION}_${DEBARCH}"
@@ -139,20 +138,13 @@ EOF
 	ln -s -f ${METAPKGNAME}.deb ${DIR}/deploy/linux-latest_${DEBARCH}.deb
 	rm -rf ${METATMPDIR}
 
-
-
-
-
-
-	cd ${DIR}/
+	popd
 }
 
-BUILDREV=`date -u +%Y%m%d%H%M%S`
-DEB_PKGVERSION=${KERNEL_REL}+${DISTRO}${BUILDREV}
-
-echo "Building kernel packages"
+echo "Building kernel packages for $KERNEL_FLAVOUR ($FLAVOUR_DESC)"
 echo "Architecture: ${DEBARCH}"
 echo "Package version: ${DEB_PKGVERSION}"
+echo "Config: ${KERNEL_DEFCONFIG}"
 
 make_config
 #~ make_menuconfig
