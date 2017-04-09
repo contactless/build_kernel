@@ -71,9 +71,9 @@ make_deb () {
 	echo "kernel uts= $KERNEL_UTS"
 
 	ln -s -f linux-image-${KERNEL_UTS}_${DEB_PKGVERSION}_${DEBARCH}.deb ${PKGDIR}/linux-image_${DEBARCH}.deb
-	ln -s -f linux-firmware-image-${KERNEL_UTS}_${DEB_PKGVERSION}_all.deb ${PKGDIR}/linux-firmware-image_all.deb
+	ln -s -f linux-firmware-image-${KERNEL_UTS}_${DEB_PKGVERSION}_${DEBARCH}.deb ${PKGDIR}/linux-firmware-image_${DEBARCH}.deb
 	ln -s -f linux-headers-${KERNEL_UTS}_${DEB_PKGVERSION}_${DEBARCH}.deb ${PKGDIR}/linux-headers_${DEBARCH}.deb
-	ln -s -f linux-libc-dev_${DEB_PKGVERSION}_${DEBARCH}.deb ${PKGDIR}/linux-libc-dev_${DEBARCH}.deb
+	ln -s -f linux-libc-dev_${DEB_PKGVERSION}_${DEBARCH}.deb ${PKGDIR}/linux-libc-dev_${DEBARCH}.deb	# FIXME: it should be built per-arch, and not per-flavour
 
 	METATMPDIR=`mktemp -d`
 	METAPKGNAME="linux-image-${KERNEL_FLAVOUR}_${DEB_PKGVERSION}_${DEBARCH}"
