@@ -29,7 +29,7 @@ mkdir -p "$KBUILD_OUTPUT"
 
 make_config() {
 	pushd "$SRCDIR"
-	if [[ -e ".config" ]]; then
+	if [[ -t 0 && -e "${KBUILD_OUTPUT}/.config" ]]; then
 		echo ".config already present"
 		read -n 1 -p "Use $KERNEL_DEFCONFIG instead? (y/N) " yn
 		echo
