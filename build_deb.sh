@@ -117,25 +117,26 @@ make_deb () {
 	ln -s -f linux-libc-dev_${DEB_PKGVERSION}_${DEBARCH}.deb ${PKGDIR}/linux-libc-dev_${DEBARCH}.deb
 
 	METATMPDIR=`mktemp -d`
-	METAPKGNAME="linux-latest_${DEB_PKGVERSION}_${DEBARCH}"
+	METAPKGNAME="linux-image-${KERNEL_FLAVOUR}_${DEB_PKGVERSION}_${DEBARCH}"
 	mkdir $METATMPDIR/${METAPKGNAME}
 	mkdir $METATMPDIR/${METAPKGNAME}/DEBIAN
 	cat <<EOF > "$METATMPDIR/${METAPKGNAME}/DEBIAN/control"
-Package: linux-latest
+Package: linux-image-${KERNEL_FLAVOUR}
 Version: $DEB_PKGVERSION
 Section: main
 Priority: optional
 Architecture: $DEBARCH
 Depends: linux-image-${KERNEL_UTS} (>= $DEB_PKGVERSION), linux-firmware-image-${KERNEL_UTS} (>= $DEB_PKGVERSION), wb-configs (>= 1.04)
+Provides: linux-image-${DISTRO}
 Installed-Size:
 Maintainer: Evgeny Boger
-Description: A metapackage for latest Linux kernel for Wiren Board
+Description: A metapackage for latest Linux kernel for ${FLAVOUR_DESC}
 EOF
 
 	dpkg --build ${METATMPDIR}/${METAPKGNAME}
 
 	cp ${METATMPDIR}/${METAPKGNAME}.deb ${DIR}/deploy/
-	ln -s -f ${METAPKGNAME}.deb ${DIR}/deploy/linux-latest_${DEBARCH}.deb
+	ln -s -f ${METAPKGNAME}.deb ${DIR}/deploy/linux-image-${KERNEL_FLAVOUR}_${DEBARCH}.deb
 	rm -rf ${METATMPDIR}
 
 	popd
