@@ -51,47 +51,6 @@ make_menuconfig () {
 	popd
 }
 
-make_deb_dtc() {
-	local DTCVERSION="1.4.1+${DISTRO}${BUILDREV}"
-	local DTCPKGNAME="device-tree-compiler_${DTCVERSION}_${DEBARCH}"
-	local DTCTMPDIR=`mktemp -d`
-	unset TARGET_ARCH	# it breaks dtc build for some strange reason
-
-	[[ -e "${DIR}/KERNEL/scripts/dtc/Makefile.standalone" ]] || {
-		echo "Not building device-tree-compiler for ${DEBARCH} due to absence of Makefile.standalone"
-		return
-	}
-
-	pushd ${DIR}/KERNEL/scripts/dtc
-	make -f Makefile.standalone clean &&
-	make -f Makefile.standalone CC=${CROSS_COMPILE}gcc &&
-	fakeroot make -f Makefile.standalone DESTDIR=$DTCTMPDIR/$DTCPKGNAME install
-	ret=$?
-	fakeroot make -f Makefile.standalone clean
-	popd
-
-	[[ $ret != 0 ]] && {
-		echo "DTC build failed"
-		return $ret
-	}
-
-	mkdir -p ${DTCTMPDIR}/${DTCPKGNAME}/DEBIAN
-	cat > ${DTCTMPDIR}/${DTCPKGNAME}/DEBIAN/control <<EOF
-Package: device-tree-compiler
-Version: ${DTCVERSION}
-Architecture: ${DEBARCH}
-Maintainer: Alexey Ignatov <lexszero@gmail.com>
-Depends: libc6 (>= 2.7)
-Section: devel
-Priority: optional
-Description: Device Tree Compiler for Flat Device Trees with overlays support
-EOF
-	dpkg --build ${DTCTMPDIR}/${DTCPKGNAME}
-	cp ${DTCTMPDIR}/${DTCPKGNAME}.deb ${DIR}/deploy/
-	ln -s -f ${DTCPKGNAME}.deb ${DIR}/deploy/device-tree-compiler_${DEBARCH}.deb
-	rm -rf ${DTCTMPDIR}
-}
-
 make_deb () {
 	[[ -e "$(which depmod)" ]] || {
 		echo "Need depmod to build modules correctly. Please install kmod package"
@@ -150,9 +109,3 @@ echo "Config: ${KERNEL_DEFCONFIG}"
 make_config
 #~ make_menuconfig
 make_deb
-make_deb_dtc
-
-echo "-----------------------------"
-echo "Script Complete"
-echo "$ export kernel_version=${KERNEL_UTS}]"
-echo "-----------------------------"
