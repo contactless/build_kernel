@@ -99,18 +99,8 @@ make_deb () {
 	}
 
 	cd ${DIR}/KERNEL
-	make -j${CORES} ARCH=arm KBUILD_DEBARCH=${DEBARCH}  zImage modules
-
-	unset DTBS
-	cat ${DIR}/KERNEL/arch/arm/Makefile | grep "dtbs:" >/dev/null 2>&1 && DTBS=1
-	if [ "x${DTBS}" != "x" ] ; then
-		echo "-----------------------------"
-		echo "make -j${CORES} ARCH=arm dtbs"
-		echo "-----------------------------"
-		make -j${CORES} ARCH=arm dtbs
-		ls arch/arm/boot/* | grep dtb >/dev/null 2>&1 || unset DTBS
-	fi
-
+	make -j${CORES} ARCH=arm KBUILD_DEBARCH=${DEBARCH} zImage modules dtbs
+	
 	echo "-----------------------------"
 	echo "make -j${CORES} ARCH=arm KBUILD_DEBARCH=${DEBARCH} KDEB_PKGVERSION=${DEB_PKGVERSION} bindeb-pkg"
 	echo "-----------------------------"
