@@ -1,0 +1,12 @@
+#!/bin/bash
+ln -s -f $2 /boot/zImage
+
+[[ -e "/usr/lib/linux-image-${1}" ]] && {
+	DTBS=/boot/dtbs
+	if [[ -d "$DTBS" ]]; then
+		mv "$DTBS" "${DTBS}.orig"
+	elif [[ -h "$DTBS" ]]; then
+		rm -f "$DTBS"
+	fi
+	ln -s "/usr/lib/linux-image-${1}" "$DTBS"
+}

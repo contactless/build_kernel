@@ -85,12 +85,16 @@ Version: $DEB_PKGVERSION
 Section: main
 Priority: optional
 Architecture: $DEBARCH
-Depends: linux-image-${KERNEL_UTS} (>= $DEB_PKGVERSION), linux-firmware-image-${KERNEL_UTS} (>= $DEB_PKGVERSION), wb-configs (>= 1.04)
+Depends: linux-image-${KERNEL_UTS} (>= $DEB_PKGVERSION), linux-firmware-image-${KERNEL_UTS} (>= $DEB_PKGVERSION)
 Provides: linux-image-${DISTRO}
+Replaces: linux-image-4.1.15-imxv5-x0.1, linux-image-4.9.6-wb
+Conflicts: linux-image-4.9.6-wb, wb-configs (<= 1.71)
 Installed-Size:
 Maintainer: Evgeny Boger
 Description: A metapackage for latest Linux kernel for ${FLAVOUR_DESC}
 EOF
+	mkdir -p "$METATMPDIR/$METAPKGNAME/etc/kernel/postinst.d"
+	cp "$DIR/wb.postinst" "$METATMPDIR/$METAPKGNAME/etc/kernel/postinst.d/01wb"
 
 	dpkg --build ${METATMPDIR}/${METAPKGNAME}
 
