@@ -40,6 +40,7 @@ make_deb_dtc() {
 	local DTCVERSION="1.4.1+${DISTRO}${BUILDREV}"
 	local DTCPKGNAME="device-tree-compiler_${DTCVERSION}_armel"
 	local DTCTMPDIR=`mktemp -d`
+	unset TARGET_ARCH       # it breaks dtc build for some strange reason
 
 	[[ -e "${DIR}/KERNEL/scripts/dtc/Makefile.standalone" ]] || {
 		echo "Not building device-tree-compiler for armel due to absence of Makefile.standalone"
