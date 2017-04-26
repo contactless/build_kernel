@@ -71,7 +71,7 @@ make_deb () {
 	echo "kernel uts= $KERNEL_UTS"
 
 	ln -s -f linux-image-${KERNEL_UTS}_${DEB_PKGVERSION}_${DEBARCH}.deb ${PKGDIR}/linux-image_${KERNEL_FLAVOUR}_${DEBARCH}.deb
-	ln -s -f linux-firmware-image-${KERNEL_UTS}_${DEB_PKGVERSION}_${DEBARCH}.deb ${PKGDIR}/linux-firmware-image_${KERNEL_FLAVOUR}_${DEBARCH}.deb
+	ln -s -f linux-firmware-image-${KERNEL_UTS}_${DEB_PKGVERSION}_all.deb ${PKGDIR}/linux-firmware-image_${KERNEL_FLAVOUR}.deb
 	ln -s -f linux-headers-${KERNEL_UTS}_${DEB_PKGVERSION}_${DEBARCH}.deb ${PKGDIR}/linux-headers_${KERNEL_FLAVOUR}_${DEBARCH}.deb
 	ln -s -f linux-libc-dev_${DEB_PKGVERSION}_${DEBARCH}.deb ${PKGDIR}/linux-libc-dev_${KERNEL_FLAVOUR}_${DEBARCH}.deb	# FIXME: it should be built per-arch, and not per-flavour
 
