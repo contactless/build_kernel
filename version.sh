@@ -13,10 +13,10 @@ SRCDIR=$DIR/KERNEL
 PKGDIR=$DIR/deploy
 mkdir -p "$PKGDIR"
 
-BRANCH="dev/v4.9.x"
+BRANCH="dev/v4.1.15"
 
 DISTRO=wb
-KERNEL_REL=4.9
+KERNEL_REL=4.1
 
 setup_kernel_vars() {
 	case "$KERNEL_FLAVOUR" in
@@ -24,11 +24,6 @@ setup_kernel_vars() {
 			DEBARCH=armel
 			KERNEL_DEFCONFIG=mxs_wirenboard_defconfig
 			FLAVOUR_DESC="Wiren Board 2-5"
-			;;
-		wb6)
-			DEBARCH=armhf
-			KERNEL_DEFCONFIG=imx6_wirenboard_defconfig
-			FLAVOUR_DESC="Wiren Board 6"
 			;;
 		*)
 			echo "Unsupported KERNEL_FLAVOUR, please specify one of: wb2, wb6"

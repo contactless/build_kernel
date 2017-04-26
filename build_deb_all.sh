@@ -3,7 +3,7 @@
 export BUILDREV=`date -u +%Y%m%d%H%M%S`
 . ./version.sh
 
-for KERNEL_FLAVOUR in wb2 wb6; do
+for KERNEL_FLAVOUR in wb2; do
 	# get DEBARCH for current flavour
 	setup_kernel_vars
 
@@ -11,7 +11,7 @@ for KERNEL_FLAVOUR in wb2 wb6; do
 	wbdev user KERNEL_FLAVOUR=${KERNEL_FLAVOUR} BUILDREV=${BUILDREV} ./build_deb.sh
 done
 
-for DEBARCH in armel armhf; do
-	export WBDEV_TARGET=wheezy-${DEBARCH}
-	wbdev user DEBARCH=${DEBARCH} BUILDREV=${BUILDREV} ./build_deb_dtc.sh
-done
+#for DEBARCH in armel; do
+#	export WBDEV_TARGET=wheezy-${DEBARCH}
+#	wbdev user DEBARCH=${DEBARCH} BUILDREV=${BUILDREV} ./build_deb_dtc.sh
+#done
