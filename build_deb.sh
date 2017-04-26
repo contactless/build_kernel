@@ -54,7 +54,8 @@ make_menuconfig () {
 make_deb () {
 	[[ -e "$(which depmod)" ]] || {
 		echo "Need depmod to build modules correctly. Please install kmod package"
-		exit 1
+		export DEPMOD="$DIR/depmod"
+		#exit 1
 	}
 
 	pushd "${SRCDIR}"
@@ -87,8 +88,8 @@ Priority: optional
 Architecture: $DEBARCH
 Depends: linux-image-${KERNEL_UTS} (>= $DEB_PKGVERSION), linux-firmware-image-${KERNEL_UTS} (>= $DEB_PKGVERSION)
 Provides: linux-image-${DISTRO}
-Replaces: linux-image-4.1.15-imxv5-x0.1, linux-image-4.9.6-wb
-Conflicts: linux-image-4.1.15-imxv5-x0.1, linux-image-4.9.6-wb, wb-configs (<= 1.71)
+Replaces: linux-image-4.1.15-imxv5-x0.1
+Conflicts: linux-image-4.1.15-imxv5-x0.1, wb-configs (<= 1.71)
 Installed-Size:
 Maintainer: Evgeny Boger
 Description: A metapackage for latest Linux kernel for ${FLAVOUR_DESC}
