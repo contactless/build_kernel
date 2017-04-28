@@ -16,7 +16,7 @@ mkdir -p "$PKGDIR"
 BRANCH="dev/v4.1.15"
 
 DISTRO=wb
-KERNEL_REL=4.1
+KERNEL_REL=4.1-imxv5-x0.1
 
 setup_kernel_vars() {
 	case "$KERNEL_FLAVOUR" in
