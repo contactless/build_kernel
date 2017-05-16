@@ -8,7 +8,6 @@ set -e
 INITRAMFS="$(readlink -f "$1")"
 
 export KERNEL_FLAVOUR=${KERNEL_FLAVOUR:-wb6_initramfs}
-export DT=${DT:-imx6ul-wirenboard-evk}
 
 source  ./version.sh
 setup_kernel_vars || exit $?
@@ -36,18 +35,11 @@ make_config() {
 make_config
 
 KCONFIG=${KBUILD_OUTPUT}/.config
-grep 'CONFIG_ARM_APPENDED_DTB=y' "$KCONFIG" || {
-	echo "CONFIG_ARM_APPENDED_DTB is not set, this makes no sense"
-	exit 1
-}
 
 rm -rf "$INITRAMFS/lib/modules"
 sed -ri "s#^CONFIG_INITRAMFS_SOURCE=.*#CONFIG_INITRAMFS_SOURCE=\"$INITRAMFS\"#" "$KCONFIG"
 
 pushd "$SRCDIR"
-make -j${CORES} ARCH=arm INSTALL_MOD_PATH="${INITRAMFS}" modules modules_install zImage ${DT}.dtb
+make -j${CORES} ARCH=arm INSTALL_MOD_PATH="${INITRAMFS}" modules modules_install zImage dtbs
 popd
 
-pushd "$KBUILD_OUTPUT"
-cat arch/arm/boot/zImage arch/arm/boot/dts/${DT}.dtb > zImage-dtb
-popd
