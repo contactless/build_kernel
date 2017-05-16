@@ -43,3 +43,8 @@ pushd "$SRCDIR"
 make -j${CORES} ARCH=arm INSTALL_MOD_PATH="${INITRAMFS}" modules modules_install zImage dtbs
 popd
 
+DESTDIR="$PKGDIR/$KERNEL_FLAVOUR"
+rm -rf "$DESTDIR"
+mkdir -p "$DESTDIR"
+cp "$KBUILD_OUTPUT/arch/arm/boot/zImage" "$DESTDIR"
+cp "$KBUILD_OUTPUT/arch/arm/boot/dts/"*.dtb "$DESTDIR"
