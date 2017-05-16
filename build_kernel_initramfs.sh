@@ -1,5 +1,6 @@
-#!/bin/bash -x
+#!/bin/bash
 set -e
+#set -x
 
 [[ "$#" == "1" ]] || {
 	echo "Usage: $0 <initramfs>"
@@ -40,6 +41,7 @@ rm -rf "$INITRAMFS/lib/modules"
 sed -ri "s#^CONFIG_INITRAMFS_SOURCE=.*#CONFIG_INITRAMFS_SOURCE=\"$INITRAMFS\"#" "$KCONFIG"
 
 pushd "$SRCDIR"
+make -j${CORES} ARCH=arm INSTALL_MOD_PATH="${INITRAMFS}"
 make -j${CORES} ARCH=arm INSTALL_MOD_PATH="${INITRAMFS}" modules modules_install zImage dtbs
 popd
 
