@@ -25,6 +25,11 @@ setup_kernel_vars() {
 			KERNEL_DEFCONFIG=mxs_wirenboard_defconfig
 			FLAVOUR_DESC="Wiren Board 2-5"
 			;;
+		wb2_initramfs)
+			DEBARCH=armel
+			KERNEL_DEFCONFIG=mxs_wirenboard_usbupdate_defconfig
+			FLAVOUR_DESC="Wiren Board 2-5 (initramfs)"
+			;;
 		wb6)
 			DEBARCH=armhf
 			KERNEL_DEFCONFIG=imx6_wirenboard_defconfig
