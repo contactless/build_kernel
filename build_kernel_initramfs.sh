@@ -43,6 +43,10 @@ sed -ri "s#^CONFIG_INITRAMFS_SOURCE=.*#CONFIG_INITRAMFS_SOURCE=\"$INITRAMFS\"#" 
 pushd "$SRCDIR"
 make -j${CORES} ARCH=arm INSTALL_MOD_PATH="${INITRAMFS}"
 make -j${CORES} ARCH=arm INSTALL_MOD_PATH="${INITRAMFS}" modules modules_install zImage dtbs
+
+if [[ -n "$APPEND_DT" ]]; then
+	cat $KBUILD_OUTPUT/arch/arm/boot/dts/$APPEND_DT.dtb >> $KBUILD_OUTPUT/arch/arm/boot/zImage
+fi
 popd
 
 DESTDIR="$PKGDIR/$KERNEL_FLAVOUR"

@@ -32,8 +32,9 @@ setup_kernel_vars() {
 			;;
 		wb2_usbgadget)
 			DEBARCH=armel
-			KERNEL_DEFCONFIG=mxs_usbgadget_ether_defconfig
+			KERNEL_DEFCONFIG=mxs_wirenboard_initramfs_defconfig
 			FLAVOUR_DESC="Wiren Board 2-5 (USB gadget bootlet)"
+			APPEND_DT=imx28-wirenboard5x-usbfw
 			;;
 		wb6)
 			DEBARCH=armhf
