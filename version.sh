@@ -25,10 +25,26 @@ setup_kernel_vars() {
 			KERNEL_DEFCONFIG=mxs_wirenboard_defconfig
 			FLAVOUR_DESC="Wiren Board 2-5"
 			;;
+		wb2_initramfs)
+			DEBARCH=armel
+			KERNEL_DEFCONFIG=mxs_wirenboard_initramfs_defconfig
+			FLAVOUR_DESC="Wiren Board 2-5 (initramfs)"
+			;;
+		wb2_usbgadget)
+			DEBARCH=armel
+			KERNEL_DEFCONFIG=mxs_wirenboard_initramfs_defconfig
+			FLAVOUR_DESC="Wiren Board 2-5 (USB gadget bootlet)"
+			APPEND_DT=imx28-wirenboard5x-usbfw
+			;;
 		wb6)
 			DEBARCH=armhf
 			KERNEL_DEFCONFIG=imx6_wirenboard_defconfig
 			FLAVOUR_DESC="Wiren Board 6"
+			;;
+		wb6_initramfs)
+			DEBARCH=armhf
+			KERNEL_DEFCONFIG=imx6_wirenboard_initramfs_defconfig
+			FLAVOUR_DESC="Wiren Board 6 (initramfs)"
 			;;
 		*)
 			echo "Unsupported KERNEL_FLAVOUR, please specify one of: wb2, wb6"
