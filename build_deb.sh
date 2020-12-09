@@ -63,7 +63,7 @@ make_deb () {
 	echo "-----------------------------"
 	echo "make -j${CORES} ARCH=arm KBUILD_DEBARCH=${DEBARCH} KDEB_PKGVERSION=${DEB_PKGVERSION} bindeb-pkg"
 	echo "-----------------------------"
-	fakeroot make -j${CORES} ARCH=arm KBUILD_DEBARCH=${DEBARCH} KDEB_PKGVERSION=${DEB_PKGVERSION} bindeb-pkg
+	make -j${CORES} ARCH=arm KBUILD_DEBARCH=${DEBARCH} KDEB_PKGVERSION=${DEB_PKGVERSION} bindeb-pkg
 	mv ${KBUILD_OUTPUT}/../*.deb ${PKGDIR}
 
 
