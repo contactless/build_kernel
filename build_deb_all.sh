@@ -1,5 +1,8 @@
 #!/bin/bash -x
 
+#Temp. use test docker image
+export WBDEV_IMAGE=contactless/devenv:test
+
 export BUILDREV=`date -u +%Y%m%d%H%M%S`
 . ./version.sh
 
