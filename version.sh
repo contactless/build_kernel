@@ -13,11 +13,6 @@ SRCDIR=$DIR/KERNEL
 PKGDIR=$DIR/deploy
 mkdir -p "$PKGDIR"
 
-BRANCH="dev/v4.9.x"
-
-DISTRO=wb
-KERNEL_REL=4.9
-
 setup_kernel_vars() {
 	case "$KERNEL_FLAVOUR" in
 		wb2)
@@ -55,8 +50,6 @@ setup_kernel_vars() {
 
 	setup_deb_vars
 
-	DEB_PKGVERSION=${KERNEL_REL}+${DISTRO}${BUILDREV}
-	export DEB_PKGVERSION
 }
 
 setup_deb_vars() {
@@ -73,5 +66,5 @@ setup_deb_vars() {
 			;;
 	esac
 	[[ -z "$BUILDREV" ]] && BUILDREV=`date -u +%Y%m%d%H%M%S`
-	export CROSS_COMPILE BUILDREV DEB_PKGVERSION
+	export CROSS_COMPILE BUILDREV
 }

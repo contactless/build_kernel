@@ -21,6 +21,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
+set -x
 source version.sh
 setup_kernel_vars || exit $?
 
@@ -64,7 +65,12 @@ make_deb () {
 
 	pushd "${SRCDIR}"
 	make -j${CORES} ARCH=arm KBUILD_DEBARCH=${DEBARCH} zImage modules dtbs
-	
+
+	KERNEL_UTS=$(cat ${KBUILD_OUTPUT}/include/generated/utsrelease.h | awk '{print $3}' | sed 's/\"//g' )
+	echo "kernel uts= $KERNEL_UTS"
+	DISTRO=wb
+	DEB_PKGVERSION=${KERNEL_UTS}+${DISTRO}${BUILDREV}
+
 	echo "-----------------------------"
 	echo "make -j${CORES} ARCH=arm KBUILD_DEBARCH=${DEBARCH} KDEB_PKGVERSION=${DEB_PKGVERSION} bindeb-pkg"
 	echo "-----------------------------"
@@ -72,11 +78,7 @@ make_deb () {
 	mv ${KBUILD_OUTPUT}/../*.deb ${PKGDIR}
 
 
-	KERNEL_UTS=$(cat ${KBUILD_OUTPUT}/include/generated/utsrelease.h | awk '{print $3}' | sed 's/\"//g' )
-	echo "kernel uts= $KERNEL_UTS"
-
 	ln -s -f linux-image-${KERNEL_UTS}_${DEB_PKGVERSION}_${DEBARCH}.deb ${PKGDIR}/linux-image_${KERNEL_FLAVOUR}_${DEBARCH}.deb
-	ln -s -f linux-firmware-image-${KERNEL_UTS}_${DEB_PKGVERSION}_all.deb ${PKGDIR}/linux-firmware-image_${KERNEL_FLAVOUR}.deb
 	ln -s -f linux-headers-${KERNEL_UTS}_${DEB_PKGVERSION}_${DEBARCH}.deb ${PKGDIR}/linux-headers_${KERNEL_FLAVOUR}_${DEBARCH}.deb
 	ln -s -f linux-libc-dev_${DEB_PKGVERSION}_${DEBARCH}.deb ${PKGDIR}/linux-libc-dev_${KERNEL_FLAVOUR}_${DEBARCH}.deb	# FIXME: it should be built per-arch, and not per-flavour
 
