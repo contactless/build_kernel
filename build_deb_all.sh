@@ -14,7 +14,8 @@ for KERNEL_FLAVOUR in wb2 wb6; do
 	wbdev user KERNEL_FLAVOUR=${KERNEL_FLAVOUR} BUILDREV=${BUILDREV} ./build_deb.sh
 done
 
-for DEBARCH in armel armhf; do
-	export WBDEV_TARGET=wheezy-${DEBARCH}
-	wbdev user DEBARCH=${DEBARCH} BUILDREV=${BUILDREV} ./build_deb_dtc.sh
-done
+#device-tree-compiler теперь не строится с ядром, а идет пакетом из репо Debian.
+#for DEBARCH in armel armhf; do
+#	export WBDEV_TARGET=wheezy-${DEBARCH}
+#	wbdev user DEBARCH=${DEBARCH} BUILDREV=${BUILDREV} ./build_deb_dtc.sh
+#done
