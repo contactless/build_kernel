@@ -92,7 +92,8 @@ Version: $DEB_PKGVERSION
 Section: main
 Priority: optional
 Architecture: $DEBARCH
-Depends: linux-image-${KERNEL_UTS} (>= $DEB_PKGVERSION), linux-firmware-image-${KERNEL_UTS} (>= $DEB_PKGVERSION)
+Breaks: wb-hwconf-manager (<< 1.38.2)
+Depends: linux-image-${KERNEL_UTS} (>= $DEB_PKGVERSION)
 Provides: linux-image-${DISTRO}
 Replaces: linux-image-4.1.15-imxv5-x0.1, linux-image-4.9.6-wb
 Conflicts: linux-image-4.1.15-imxv5-x0.1, linux-image-4.9.6-wb, wb-configs (<= 1.72)
