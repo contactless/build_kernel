@@ -3,6 +3,11 @@
 #Temp. use test docker image
 export WBDEV_IMAGE=contactless/devenv:test
 
+#Under 'wbdev user' we should remove user path that comes from ~/.profile, because it can break the build.
+export PATH=/usr/local/go/bin:/home/ivan/wbdev/go/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+#umask set in ~/.profile can break the build (debian/control file umask must be default)
+umask 022
+
 export BUILDREV=`date -u +%Y%m%d%H%M%S`
 . ./version.sh
 

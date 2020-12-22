@@ -25,11 +25,6 @@ set -x
 source version.sh
 setup_kernel_vars || exit $?
 
-#Under 'wbdev user' we should remove user path that comes from ~/.profile, because it can break the build.
-export PATH=/usr/local/go/bin:/home/ivan/wbdev/go/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-#umask set in ~/.profile can break the build (debian/control file umask must be default)
-umask 022
-
 export KBUILD_OUTPUT=$DIR/build/$KERNEL_FLAVOUR
 mkdir -p "$KBUILD_OUTPUT"
 
