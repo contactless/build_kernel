@@ -5,4 +5,4 @@ BRD=${1:-wb6}
 . vars.sh
 
 try time make $KMAKESTR savedefconfig
-mv defconfig arch/arm/configs/_defconfig
+mv $KBUILD_OUTPUT/defconfig KERNEL/arch/arm/configs/_defconfig_$BRD

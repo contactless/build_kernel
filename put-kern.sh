@@ -19,8 +19,8 @@ TARFULL=$TARPATH/$TAR
 try make $KMAKESTR INSTALL_MOD_PATH=$INSTM modules_install
 
 #Получить строку вида 4.9.22ivz после сборки ядра. 
-KERN=$(cat "$KBUILD_OUTPUT/include/generated/utsrelease.h" | awk '{print $3}' | sed 's/\"//g' )
-[ -z "$KERN" ] && die "?Cant get kernel version: KERN=$KERN"
+get_kern_ver
+[ -z "$KERN" ] && die "?Cant get kernel version."
 
 #Создаем архив с модулями.
 #Чтобы не было ошибки file changed as we read it, можно сделать touch + --exclude (или не делать - не мешает).
