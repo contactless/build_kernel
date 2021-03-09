@@ -88,7 +88,7 @@ Architecture: $DEBARCH
 Depends: linux-image-${KERNEL_UTS} (>= $DEB_PKGVERSION), linux-firmware-image-${KERNEL_UTS} (>= $DEB_PKGVERSION)
 Provides: linux-image-${DISTRO}
 Replaces: linux-image-4.1.15-imxv5-x0.1, linux-image-4.9.6-wb
-Conflicts: linux-image-4.1.15-imxv5-x0.1, linux-image-4.9.6-wb, wb-configs (<= 1.72)
+Conflicts: linux-image-4.1.15-imxv5-x0.1, linux-image-4.9.6-wb, wb-configs (<= 1.72), wb-hwconf-manager (<< 1.38.3)
 Installed-Size:
 Maintainer: Evgeny Boger
 Description: A metapackage for latest Linux kernel for ${FLAVOUR_DESC}
